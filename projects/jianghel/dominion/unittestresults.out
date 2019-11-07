@@ -1,0 +1,279 @@
+Begin Testing mine:
+Test 1: choice 1 isn't a treasure card ----------------------------------------------
+Test 1 passed; returned -1
+Test 2: choice 2 costs more than 3 of choice 1 ----------------------------------------------
+Test 2 failed; returned 0
+Test 2 failed; gold gained 0
+Test 3: valid choice 2 and choice1----------------------------------------------
+Test 3 passed; did not return before gaining card
+Test 3 passed; gained card onto hand
+Test 3 passed; subtracted choice2 from supply
+Test 4: choice 1 is actually trashed----------------------------------------------
+Test 4 failed; discardCount changed
+Test 4 passed; supplyCount fine
+Test 4 passed; choice1 not in hand
+Test 5: choice 2 is not treasure card----------------------------------------------
+Test 5 passed; returned -1
+Test 5 passed; card not gained 0
+Tests completed! Failed 3 tests out of 11
+
+
+Begin Testing baron:
+-------Test 1: baron card is discarded ----------------------------------------------
+Test1: failed; baron card still in hand
+Test1: failed; baron card not in discard pile; count = 1
+-------Test 2: player chooses to discard estate in hand ----------------------------------------------
+handcount: 3
+Test2: passed; discard pile changed
+Test2: passed; +1 numbuys
+Test2: passed; +4 coins
+Test2: passed; estate card no longer in hand
+-------Test 3: player chooses to discard estate card with no estate card in hand ----------------------------
+Test3: passed; did not gain coins
+Test3: failed; estate card not gained 
+Test3: failed; estate supply count incorrect; count is 5
+-------Test 4: player chooses gain estate card even with estate card in hand----------------------------
+Test4: passed; did not gain coins
+Test4: failed; incorrect estate card nunmber: 1 
+Test4: failed; estate supply count incorrect; count is 3
+-------Test 5: player chooses gain estate card because no estate card in hand----------------------------
+Test5: passed; did not gain coins
+Test5: failed; incorrect estate card nunmber: 0 
+Test5: failed; estate supply count incorrect; count is -1
+Tests completed! Failed 8 tests out of 15
+
+
+Begin Testing minion:
+-------Test 1: minion choice 1  ----------------------------------------------
+Test 1: failed; incorrect gold; coins: 7 vs testG coins: 4
+Test 1: failed; incorrect actions; actions: 1 vs testG actions: 1
+Test 1: passed; minion no longer in hand
+-------Test 2: minion choice 2; 1 player with 5 cards, 1 player with 6 cards  -------------------------
+Test 2: failed; incorrect actions; actions: 1
+Test 2: passed; correct amount of cards gained for current player
+Test 2: failed; incorrect cards for next player; cards: 5
+Test 2: passed; correct amount of cards gained for other player
+Test 2: passed; no bad card left in current player's hand
+Test 2: failed; Bad card still left in player 1 with 5 cards' hand
+Test 2: passed; no bad card left in hand
+Tests completed! Failed 5 tests out of 10
+
+
+Begin Testing ambassador:
+-------Test 1: ambassador choice 1 is valid card and choice 2 is 2 copies --------------------------
+Test 1: failed; function returned prematurely
+Test 1: failed; gold count : 3 vs expected: 1
+-------Test 2: ambassador choice 1 is valid card but insufficent copies of choice 2 -----------------
+Test 2: passed; r == -1
+-------Test 3: choice1 = ambassador   ----------------------
+Test 3: passed; r == -1
+-------Test 4: choice1 = not in hand   ----------------------
+Test 4: passed; r == -1
+-------Test 5: ambassador choice 1 is valid card and choice2 =1  ----------------------
+Test 5: able to test as r != -1
+Test 5: failed; currentplayer gold : 2 vs expected: 1
+Test 5: failed; next player gold : 0 vs expected: 1
+Test 5: failed; other player gold : 0 vs expected: 1
+Test 5: passed; correct gold count: 29
+Tests completed! Failed 5 tests out of 9
+
+
+Begin Testing tribute:
+-------Test 1: tribute Left player has 2 cards in deck of same type--------------------------
+Test 1: failed; coins: 8 vs expected: 6
+Test 1: passed; handCount: 0 vs expected: 0
+Test 1: passed; actions: 1 vs expected: 1
+Test 1: passed; deckCount: 0 vs expected: 0
+-------Test 2: tribute Left player has 1 card in deck and 1 card in discard with different types--------
+Test 2: passed; coins: 10 vs expected: 10
+Test 2: passed; handCount: 2 vs expected: 2
+Test 2: passed; actions: 1 vs expected: 1
+Test 2: passed; deckCount: 0 vs expected: 0
+Test 2: passed; discardCount: 0 vs expected: 0
+-------Test 3: tribute Left player has 1 card in deck only------------
+Test 3: passed; coins: 10 vs expected: 10
+Test 3: failed; handCount: 0 vs expected: 1
+Test 3: failed; actions: 5 vs expected: 1
+Test 3: passed; deckCount: 0 vs expected: 0
+-------Test 4: player has no cards to reveal--------
+Test 4: passed; coins: 10 vs expected: 10
+Test 4: passed; handCount: 0 vs expected: 0
+Test 4: failed; actions: 9 vs expected: 5
+Test 4: passed; deckCount: 0 vs expected: 0
+Tests completed! Failed 0 tests out of 17
+
+
+Function 'compare'
+Lines executed:83.33% of 6
+Branches executed:100.00% of 4
+Taken at least once:75.00% of 4
+No calls
+
+Function 'newGame'
+Lines executed:0.00% of 2
+No branches
+No calls
+
+Function 'kingdomCards'
+Lines executed:0.00% of 12
+No branches
+No calls
+
+Function 'initializeGame'
+Lines executed:94.87% of 78
+Branches executed:100.00% of 46
+Taken at least once:89.13% of 46
+No calls
+
+Function 'shuffle'
+Lines executed:94.44% of 18
+Branches executed:100.00% of 8
+Taken at least once:87.50% of 8
+No calls
+
+Function 'playCard'
+Lines executed:0.00% of 14
+Branches executed:0.00% of 10
+Taken at least once:0.00% of 10
+No calls
+
+Function 'buyCard'
+Lines executed:0.00% of 13
+Branches executed:0.00% of 6
+Taken at least once:0.00% of 6
+No calls
+
+Function 'numHandCards'
+Lines executed:0.00% of 1
+No branches
+No calls
+
+Function 'handCard'
+Lines executed:0.00% of 2
+No branches
+No calls
+
+Function 'supplyCount'
+Lines executed:100.00% of 1
+No branches
+No calls
+
+Function 'fullDeckCount'
+Lines executed:0.00% of 14
+Branches executed:0.00% of 12
+Taken at least once:0.00% of 12
+No calls
+
+Function 'whoseTurn'
+Lines executed:0.00% of 1
+No branches
+No calls
+
+Function 'endTurn'
+Lines executed:0.00% of 22
+Branches executed:0.00% of 6
+Taken at least once:0.00% of 6
+No calls
+
+Function 'isGameOver'
+Lines executed:83.33% of 12
+Branches executed:100.00% of 8
+Taken at least once:75.00% of 8
+No calls
+
+Function 'scoreFor'
+Lines executed:0.00% of 62
+Branches executed:0.00% of 42
+Taken at least once:0.00% of 42
+No calls
+
+Function 'getWinners'
+Lines executed:0.00% of 33
+Branches executed:0.00% of 22
+Taken at least once:0.00% of 22
+No calls
+
+Function 'drawCard'
+Lines executed:33.33% of 24
+Branches executed:33.33% of 6
+Taken at least once:16.67% of 6
+No calls
+
+Function 'getCost'
+Lines executed:16.67% of 30
+Branches executed:100.00% of 28
+Taken at least once:10.71% of 28
+No calls
+
+Function 'isTreasureCard'
+Lines executed:100.00% of 4
+Branches executed:100.00% of 4
+Taken at least once:100.00% of 4
+No calls
+
+Function 'mineAction'
+Lines executed:92.86% of 14
+Branches executed:100.00% of 10
+Taken at least once:80.00% of 10
+No calls
+
+Function 'baronAction'
+Lines executed:100.00% of 29
+Branches executed:100.00% of 16
+Taken at least once:87.50% of 16
+No calls
+
+Function 'minionAction'
+Lines executed:100.00% of 17
+Branches executed:100.00% of 14
+Taken at least once:92.86% of 14
+No calls
+
+Function 'ambassadorAction'
+Lines executed:84.85% of 33
+Branches executed:93.75% of 32
+Taken at least once:75.00% of 32
+No calls
+
+Function 'revealDeckCard'
+Lines executed:100.00% of 6
+No branches
+No calls
+
+Function 'tributeAction'
+Lines executed:80.70% of 57
+Branches executed:93.33% of 30
+Taken at least once:76.67% of 30
+No calls
+
+Function 'cardEffect'
+Lines executed:0.00% of 147
+Branches executed:0.00% of 91
+Taken at least once:0.00% of 91
+No calls
+
+Function 'discardCard'
+Lines executed:86.67% of 15
+Branches executed:100.00% of 6
+Taken at least once:66.67% of 6
+No calls
+
+Function 'gainCard'
+Lines executed:73.33% of 15
+Branches executed:100.00% of 6
+Taken at least once:66.67% of 6
+No calls
+
+Function 'updateCoins'
+Lines executed:71.43% of 14
+Branches executed:100.00% of 8
+Taken at least once:75.00% of 8
+No calls
+
+File 'dominion.c'
+Lines executed:42.67% of 696
+Branches executed:52.53% of 415
+Taken at least once:38.80% of 415
+No calls
+dominion.c:creating 'dominion.c.gcov'
+
