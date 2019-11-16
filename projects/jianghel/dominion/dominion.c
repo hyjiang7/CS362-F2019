@@ -750,10 +750,9 @@ int isTreasureCard(int card)
         return 1;
 }
 
-
 int mineAction(int currentPlayer, int choice1, int choice2, struct gameState *state, int handPos)
 {
-       
+
         int j = state->hand[currentPlayer][choice1]; //save player's choice1 as trash card
 
         if (!isTreasureCard(j) || !isTreasureCard(choice2))
@@ -785,7 +784,6 @@ int mineAction(int currentPlayer, int choice1, int choice2, struct gameState *st
         return 0;
 }
 
-
 int baronAction(int handPos, int currentPlayer, int choice1, struct gameState *state)
 {
         state->numBuys++; //Increase buys by 1!
@@ -794,12 +792,11 @@ int baronAction(int handPos, int currentPlayer, int choice1, struct gameState *s
         if (choice1 > 0)
         {                  //Boolean true to discard an estate
                 int p = 0; //Iterator for hand!
-
                 //iterate through hand to find estate card
-                while (card_not_discarded && p > state->handCount[currentPlayer])
+                while (card_not_discarded && p < state->handCount[currentPlayer])
                 {
                         if (state->hand[currentPlayer][p] == estate)
-                        {                                                                                                          //Found an estate card!
+                        {
                                 state->coins += 4;                                                                                 //Add 4 coins to the amount of coins
                                 state->discard[currentPlayer][state->discardCount[currentPlayer]] = state->hand[currentPlayer][p]; //save estate card
                                 state->discardCount[currentPlayer]++;
@@ -819,7 +816,7 @@ int baronAction(int handPos, int currentPlayer, int choice1, struct gameState *s
                 }
         }
         else
-        {       //player does not choose to discard estate card
+        { //player does not choose to discard estate card
                 //if left in supply, gain estate card
                 if (card_not_discarded)
                 {
@@ -832,24 +829,26 @@ int baronAction(int handPos, int currentPlayer, int choice1, struct gameState *s
                 if (supplyCount(estate, state) > 0)
                 {
                         gainCard(estate, state, 0, currentPlayer); //Gain an estate will also decrease supply count
-                       
+
                         //if no more left, check if game is over
                         if (supplyCount(estate, state) == 0)
                         {
                                 gameOver = isGameOver(state);
                         }
+
+                        state->supplyCount[estate]--; //bug ->card already subtracted from supply
                 }
         }
 
-        discardCard(handPos, currentPlayer, state, 0);
+        // discardCard(handPos, currentPlayer, state, 0);  //bug -->card not discarded
 
         return gameOver;
 }
 
 int minionAction(int handPos, int currentPlayer, int choice1, int choice2, struct gameState *state)
 {
-        //+1 action
-        state->numActions++;
+
+        state->coins++;  //bug: gained coins instead of action 
 
         //discard minion card from hand
         discardCard(handPos, currentPlayer, state, 0);
@@ -863,9 +862,9 @@ int minionAction(int handPos, int currentPlayer, int choice1, int choice2, struc
         { //discard hand, redraw 4, other players with 5+ cards discard hand and draw 4
 
                 for (int i = 0; i < state->numPlayers; i++)
-                {
+                { 
                         //discard hand if it's current player or players with more than 5 cards
-                        if (i == currentPlayer || state->handCount[i] > 5)
+                        if (i == currentPlayer || state->handCount[i] > 5) //bug..supposed to be greater than 4
                         {
                                 //discard hand
                                 while (state->handCount[i] > 0)
@@ -873,10 +872,11 @@ int minionAction(int handPos, int currentPlayer, int choice1, int choice2, struc
                                         discardCard(0, i, state, 0);
                                 }
                                 //get 4 new cards
-                                for (int j = 0; j < 4; j++)
+                                for (int j = 0; j < 4; j++)             
                                 {
                                         drawCard(i, state);
                                 }
+
                         }
                 }
         }
@@ -884,7 +884,7 @@ int minionAction(int handPos, int currentPlayer, int choice1, int choice2, struc
         return 0;
 }
 
-int ambassadorAction(int handPos, int currentPlayer, int choice1, int choice2,  struct gameState *state)
+int ambassadorAction(int handPos, int currentPlayer, int choice1, int choice2, struct gameState *state)
 {
         int j = 0; //used to check if player has enough cards to discard
 
@@ -956,17 +956,16 @@ int ambassadorAction(int handPos, int currentPlayer, int choice1, int choice2,  
 }
 
 //reveals top card from deck and moves to discard pile
-void revealDeckCard(int *tributeRevealedCards, int position, int player, struct gameState *state){
+void revealDeckCard(int *tributeRevealedCards, int position, int player, struct gameState *state)
+{
 
-        tributeRevealedCards[position] = state->deck[player][state->deckCount[player]-1];
-        state->deck[player][state->deckCount[player]-1] = -1;
+        tributeRevealedCards[position] = state->deck[player][state->deckCount[player] - 1];
+        state->deck[player][state->deckCount[player] - 1] = -1;
         state->deckCount[player]--;
-        
+
         state->discard[player][state->discardCount[player]] = tributeRevealedCards[position];
         state->discardCount[player]--;
-
 }
-
 
 int tributeAction(int handPos, int currentPlayer, struct gameState *state)
 {
@@ -1045,9 +1044,7 @@ int tributeAction(int handPos, int currentPlayer, struct gameState *state)
                         //we have at least 2 cards in deck to reveal
                         revealDeckCard(tributeRevealedCards, 0, nextPlayer, state);
                         revealDeckCard(tributeRevealedCards, 1, nextPlayer, state);
-
                 }
-
         }
 
         if (tributeRevealedCards[0] == tributeRevealedCards[1])
@@ -1066,7 +1063,7 @@ int tributeAction(int handPos, int currentPlayer, struct gameState *state)
                         state->coins += 2;
                 }
                 //victory card get 2 cards
-                else if ((tributeRevealedCards[i] >=1 && tributeRevealedCards[i] <=3) || tributeRevealedCards[i] == gardens || tributeRevealedCards[i] == great_hall)
+                else if ((tributeRevealedCards[i] >= 1 && tributeRevealedCards[i] <= 3) || tributeRevealedCards[i] == gardens || tributeRevealedCards[i] == great_hall)
                 { //Victory Card Found
                         drawCard(currentPlayer, state);
                         drawCard(currentPlayer, state);
@@ -1093,7 +1090,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
         int drawntreasure = 0;
         int cardDrawn;
         int z = 0; // this is the counter for the temp hand
-   
+
         //uses switch to select card and perform actions
         switch (card)
         {
@@ -1279,7 +1276,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
 
         case minion:
 
-                return minionAction(handPos,currentPlayer,choice1, choice2, state);
+                return minionAction(handPos, currentPlayer, choice1, choice2, state);
 
         case steward:
                 if (choice1 == 1)
@@ -1308,7 +1305,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
 
                 return tributeAction(handPos, currentPlayer, state);
         case ambassador:
-                return ambassadorAction(handPos, currentPlayer, choice1, choice2,  state);
+                return ambassadorAction(handPos, currentPlayer, choice1, choice2, state);
 
         case cutpurse:
 
